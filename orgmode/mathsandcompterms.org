@@ -1,0 +1,35 @@
+* F
+** Formalism
+   It is theory that holds that statements of mathematics and logic
+   can considered to be statements about consequences of certain string
+   manipulation rules.
+* S
+** Syntactic Sugar
+   Syntactic Forms which are alternative convenient surface structures for
+   things that can be written in more uniform ways.
+* T
+** Type System
+   Collection of rules that assign a property called /type/ to various constructs
+   of a computer program (i.e. variables, expressions, functions, modules). Then
+   main purpose of type system is to reduce bugs in a computer program by
+   defining interfaces between different parts of program and then checking that
+   the parts have been connected in consistent way. This checking can happen at
+   statically (compile time), dynamically (at run time) or as a combination of
+   static and dynamic checking.
+   A type system associates a type with each computed value and by examining
+   flow of these types attempts to ensure or prove that no type error
+   occurs. Type systems are often specified as part of programming
+   languages. and built into compilers and interpreters and optionally exteneded
+   by optionall tools.
+   
+   A programming language may further associate an operation with varying
+   concrete algorithms on each type in case of *type polymorphism*
+   (e.g. Haskell)
+
+   /Type Theory/ is study of type system although concrete type systems of
+   programming languages originate from practical issues of computer
+   architecture compiler implementation and language design.
+*** Strong Typing
+    
+*** Static Typing
+*** Type Inference

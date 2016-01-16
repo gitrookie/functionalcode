@@ -1,0 +1,375 @@
+* Filling
+  Filling text means breaking it up into lines that fit a specified width. Emacs
+  does filling in two ways. In ~auto-fill-mode~ , inserting text with
+  self-inserting characters also automatically fills it. There are also explicit
+  fill commands that you can use when editing text.
+  
+  #+BEGIN_SRC emacs-lisp
+    (add-hook `text-mode-hook `auto-fill-mode)
+  #+END_SRC
+
+* Setting the value of variable
+  There are various way we can *bind* a value to the variable.
+
+  1. To ~set~ the value of symbol flowers to the  list ~`(rose violet daisy
+     buttercup)~ evaluate the following expression. ~set~ is a fuction.
+
+     #+BEGIN_SRC emacs-lisp
+       (set `rose 1)
+       (set `flowers `(rose violet daisy))
+       (symbol-value `flowers)
+       (symbol-value `rose)
+     #+END_SRC
+
+     The symbols flower is a list of symbols.
+  2. ~setq~ is a special form used to bind a value to variable.
+     The first argument is automatically quoted.
+     We set the value of a symbol with ~setq~.
+
+     #+BEGIN_SRC emacs-lisp
+       (setq flowers `(rose violet daisy)
+             animals `(lion tiger))
+     #+END_SRC
+
+  3. ~let~
+     
+* Control Structures
+  Control Structures are special forms which controls when, whether and how many
+  times the forms within them are executed.
+  ~textual order~ is the execution order in which forms are executed in order
+  they are written.
+** ~progn~ form
+   It's a special form which  was used earlier in Emacs-Lisp to evaluate two or
+   more forms in succession and return the result of last. Nowdays ~progn~ is
+   implicit in the body of functions. 
+
+   #+BEGIN_SRC emacs-lisp
+     (progn (print "Hello")
+            (print "World!"))
+   #+END_SRC
+
+** Conditionals
+   EmacsLisp has four condtional statements
+   1. ~if /condition/ /then-form/  /else-form/~
+      
+      #+BEGIN_SRC emacs-lisp
+        (if nil
+            (print "then form")
+          (print "else form"))
+      #+END_SRC
+
+   2. ~when /condition/ /then-form/~
+      
+      #+BEGIN_SRC emacs-lisp
+        (let ((x 1) (y 2))
+          (when (> x y) (print "hey") (print "world!")))
+      #+END_SRC
+
+   3. ~unless /condition/ /forms/~
+
+      #+BEGIN_SRC emacs-lisp
+        (let ((x 1) (y 2))
+          (unless (> x y) (print "Unless") (print "FORM")))
+      #+END_SRC
+
+   4. ~cond~ chooses between arbitrary number of alternatives. Each clause in
+      the ~cond~ must be a list. The ~CAR~ in this list is the /condition/
+      remaining elments if any are body forms.
+
+      #+BEGIN_SRC emacs-lisp
+        (let ((x 2) (y 2))
+          (cond
+           ((< x y) (print "First"))
+           ((> x y) (print "Second"))
+           (t (print "third"))))
+      #+END_SRC
+
+** Construct for combining conditonals
+   1. ~not~ /condition/
+   2. ~and~ /condition/
+
+      #+BEGIN_SRC emacs-lisp
+        (let ((x 1) (y 2))
+          (and (stringp x) (numberp y)))
+      #+END_SRC
+
+   3. ~or~ /condition/
+      
+      #+BEGIN_SRC emacs-lisp
+        (let ((x 1) (y 2))
+          (or (stringp x) (numberp y)))
+             
+      #+END_SRC
+
+** Iteration
+   1. ~while~ first evaluates conditon. if the result in non-nil it evaluates
+      from in textual order. The process repeates till conditon evaluates to
+      nil.
+
+      #+BEGIN_SRC emacs-lisp
+        (let ((num 5))
+          (while (> num 0)
+            (print num)
+            (setq num (1- num))))
+      #+END_SRC
+
+   2. ~dolist~ is a ~macro~.
+      ~dolist (var list [result]) body...~
+      It executes the body once for each /list/ and returns the /result/ or
+      ~nil~ if result is omitted.
+      
+      #+BEGIN_SRC emacs-lisp
+        (let ((lst `(1 2 3 4)) (result))
+          (dolist (var lst result)
+            (setq result (cons var result))))
+      #+END_SRC
+
+   3. ~dotimes (count num [result]) body...
+
+      #+BEGIN_SRC emacs-lisp
+        (let ((result))
+          (dotimes (var 5 result)
+            (setq result (cons (* var var) result))))
+      #+END_SRC
+      
+* Programming Types
+** Primitive Lisp Types
+*** Cons Cell
+    A /cons/ cell is an object that consists of two slots called the ~CAR~ and
+    ~CDR~ slots. Each slot can hold any lisp object.
+    A list is series of cons cell, linked together such that CDR slot of each
+    cons cell holds the next cons cell or empty list. The empty list is actually
+    the symbol ~nil~.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq var '(a . b))
+    #+END_SRC
+
+*** Association List
+    An associaton list or alist records a mapping from keys to values. The CAR
+    is the key and CDR is the value.
+** EmacsLisp Editint Types
+* Loading
+  Loading a file of Lisp code means bringing its content in Lisp environment in
+  the form of lisp objects. Emacs finds and opens the file, reads the text,
+  evaluates each form, then closes the file. Such a file is also called lisp
+  library. The load functions evaluates all the expressions in a file just as
+  ~eval-buffer~ function evaluates all the expressions in a buffer. The
+  difference is that load function reads and evaluates the text in the file
+  found on disk, not the text in emacs buffer. The loaded file must contain Lisp
+  expressions either as source code or byte-compiled code. Each form in a file
+  is called top-level form.
+** How Programs do Loading
+   EmacsLisp has many interfaces for loading.
+   1. ~autoload~ facility lets you register the existence of a function but puts
+      off loading the file that defines it. The first call to function
+      automatically loads the proper  library, in order to install the proper definiton
+   2. ~require~
+   3. ~load~
+   Ultimately ~autolaod~ and ~require~ calls ~load~ to do the work.
+* Evaluation
+  Lisp interpreter receives Lisp Objects and computes its value as an expression
+  known as evaluation of expression. Lisp reader converts the read syntax into
+  Lisp Object.
+  A Lisp Object intended for /evaluation/ is called /form/ or /expression/. The
+  fact that forms are data objects not mere text is fundamental difference
+  between Lisp and other programming languages. Any object can be evaluated but
+  in practice numbers, strings, symbols and strings are evaluated very often.
+  Evaluation takes place in a context called environment.
+** Kinds of Forms
+   Emacs has three different kind of forms that are evaluated differently
+   1. symbols
+   2. lists
+   3. all other types
+*** Self Evaluating Forms
+    Any form that is not a list or symbol. Self evaluating forms evaluate to
+    themselves: the result of evaluation is same object that was evaluated. The
+    number 25 evaluates to 25 string "foo" evaluates to "foo".
+*** Symbol Forms
+    When a symbol is evaluated it is treated as variable. The result is
+    variable's value if it has one.
+* Functions
+  Special Forms and Macros are not functions in Emacs Lisp.
+** Lambda Expression
+   A function (in strict sense a function object) which is written in Lisp.
+
+   #+BEGIN_SRC emacs-lisp
+     (lambda (x)
+       (* x x)))
+   #+END_SRC
+
+   Such list is valid expression which evaluates to function object. Although
+   lambda expressions can be used as above they are commonly associated with
+   symbols to make named function.
+   We can call above function by passing it to ~funcall~ below.
+
+   #+BEGIN_SRC emacs-lisp
+     (funcall (lambda (x)
+              (* x x)) 4)
+   #+END_SRC
+
+** Command
+   A command is usually a function, if written in Lisp, it is made into a
+   command using ~interactive~ form in the function definition.
+** Closure
+   Like lambda expression except it encloses an environment of lexical bindings.
+** Autoload Object
+   A place-holder for real function. If autoload object is called, Emacs load
+   the file containing the definition of the real fucntion and then calls the
+   real function.
+ * Modes
+  A mode is set of defintions that customize emacs and can be turned on and off
+  while you edit. There are two varities of modes
+  1. Major Mode which are mutually exclusive used for editing particular kinds
+     of text.
+  2. Minor Mode which provides feature which users can enable individually.
+** Hooks
+   A /hook/ is variable which can store a function or functions to be called on
+   particular ocassion by existing program. Most hooks in emacs are normal
+   hooks which ends in ~-hook~ . Every Major Mode is supposed to *run a hook*
+   called /mode hook/ as one of the last steps of intialization.
+** Major Modes
+   Specializes Emacs for editing particuar kind of texts. Each buffer has one
+   major mode at a time. Every major is associated with a major mode command
+   whose name should end in ~-mode~. This command should take care of switching
+   to that mode in the current buffer, by setting various buffer-local variables
+   such as local keymap.
+
+   The easiest way to write a major mode is to use the macro
+   ~define-derived-mode~ which sets up new variant of an existing major mode.
+** Minor Modes
+   A minor mode provides features that user can enable or disable independently
+   of the choice of major mode. Minor modes can be enabled individually or in
+   combination. 
+
+* Text
+  Text refers to the characters in the buffers, together with their
+  properties. *A point is always between two characters, and the cursor appears
+  on the character after point*.
+
+* Variables
+  A variable is a name used in a program to stand for a value. In Lisp each
+  variable is represneted by Lisp symbol. The variable name is simply symbol's
+  name and the variable value is stored in the symbol's value cell.
+
+** Global Variables
+
+** Constant Variables
+   In Lisp certain symbols evaluate to themselves. These incldue ~nil~ and ~t~,
+   as well as any symbol whose name starts with ':' (these are called
+   keywords). These symbols cannot be rebound nor their values be changed.
+
+** Local Variables
+
+*** let
+    Its a special form
+
+*** let*
+    Its a special form
+
+** Void Variable
+   A variable is void if the symbol represeting it has unassigned value
+   cell. Consider following snippet of code
+
+   #+BEGIN_SRC emacs-lisp :exports both
+     (setq var 12)
+     (let ((var 23))
+       (boundp `var))
+   #+END_SRC
+
+   #+RESULTS:
+   : t
+
+   Here ~makunbound~ empites the value cell of var which has local
+   binding. Therefore when we try to evaluate ~var~ inside ~let~ we get a
+   traceback. But if we try to evalute it outside let global binding takes
+   effect.
+
+** Defining Global Variables
+   A variable definition is a construct that announces your intention to use a
+   symbol as a global variable. It uses the special forms ~defvar~ or
+   ~defconst~. Difference between the two forms is that ~defconst~
+   unconditonally intializes the variable, whereas ~defvar~ intializes it only
+   if it is originally void.
+
+*** ~defvar~ symbol [value [doc-string]]
+    The special form defines symbol as variable. Note that symbol is not
+    evaluated; the symbol to be defined should appear explicitly in the ~defvar~
+    form. The variable is marked as /special/, meaning that it should always be
+    dynamically bound.
+    if symbol has a buffer-local binding in the current buffer, ~defvar~ acts on
+    default value, which is buffer independent, rather than buffer local
+    binding.
+    if /symbol/ is already /lexically bound/ then ~defvar~ sets the dynmaic value
+    
+*** ~defconst~ symbol value [doc-string]
+* S-Expressions
+  In computing s-expression are notation for nested list data invented and
+  popularized by programming language Lisp which uses them for source code as
+  well as data. An expression is classicaly defined as
+  1. an atom
+  2. an expression of the form (x . y) where x and y are s expressions.
+  The second recursive part of the definition represents oedered paris so that
+  s-exprs are effectively binary trees.
+  Most modren notation for s-expression is
+  (x y z)
+  stands for 
+  (x . (y. (z. NIL)))
+* Reading and Printing
+  /Reading/ a Lisp object means parsing a Lisp expression in textual form and
+  producing a coresponding Lisp Object. We call text the read syntax of object.
+  /Printing/ a Lisp Object means producing text that represents that
+  object-converting object to its /printed representation/. Printing the cons
+  cell produces the text (a . 5).
+  Printing and Reading are inverse operation with following exceptions
+  1. Printing can produce text that cannot be read. For example, buffers, window
+     frames, subprocesses, markers print as text starting with '#<' if you try
+     to read this printed representation we will get an error.
+  2. One Object can have multiple read syntax but printing must choose one of
+     them. 
+** Printed Representation and Read Syntax
+   The /printed representation/ is the format of the output generate by Lisp
+   printer (the func ~prin1~) for that object. Every data type has a unique
+   printed representation. The /read syntax/ of an  object is the format of the
+   input accepted by the Lisp reader (the function ~read~) for that object. This
+   is not unique many objects have more than one read syntax. For example the
+   Lisp Object numera 1 has the read syntax ~1~ and ~1.~ both produces Lisp
+   Object which reprsents literal 1. In most cases the object's printer
+   representation is also the read syntax of an object. However some types
+   doesn't have read syntax at all, since it doesn't make sense to enter objects
+   of these types as constants in Lisp program. These objects are printed in
+   hash notation, which consists of the characters '#<', a descriptive string
+   (typically the type name followed by the name of the object) and a closing
+   '>'.
+   
+   #+BEGIN_SRC emacs-lisp
+     (current-buffer)
+   #+END_SRC
+
+   #+RESULTS:
+   : #<buffer emacs-notes.org>
+
+   Hash notation cannot be read at all.
+   *In other languages an expression is a text. But in Lisp an expression is a
+   Lisp Object and secondarily a text*.
+   
+* Processes
+  Emacs runs in a process. EmacsLisp programs can invoke other programs in
+  processses of their own. These are called subprocesses or child processes of
+  the Emacs Process, which their parent process. A subprocess of Emacs can be
+  synchronous or asynchronous, depending upon how it is created. When we create
+  synchronous process Emacs waits for the process to terminate before
+  continuing. When we create an asynchronous subprocess it can run parallel with
+  the Lisp program. This kind of subprocess is represented in EmacsLisp by a
+  Lisp Object which is called a process. Lisp programs can use this object to
+  communicate with the subprocess or to control it.
+
+** Subprocess Creation
+   There are three primitives that create a subprocess in which to run a
+   program.
+   1. ~start-process~ creates an asynchronous process and returns a process object.
+   2. ~call-process~ creates a synchronous process which do not return a process
+      object. 
+   3. ~call-process-region~
+** Synchronous Process
+   Calling dired in Emacs is an example of running synchronous process.

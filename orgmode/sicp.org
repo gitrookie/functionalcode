@@ -1,0 +1,96 @@
+* Building Abstraction with procedures
+  We are about to study the idea of /computational processes/. Computational
+  processes are abstract being that inhabit computers. As they evolve, processes
+  manipulate other abstract things called /data/. The evolution of process is
+  directed by a pattern of rules called a /program/. 
+
+  Programs use to conjure processes are composed from symbolic expressions in
+  arcane and esoteric programming languages that prescribe the tasks we want our
+  processes to perform.
+
+  *Lisp was invented in late 1960's as a formalism for reasoning about the use
+   of certain kind of logical expressions called recursion equations as a model
+   for computation.*
+
+   A Lisp interpreter is a machine that carries out the process described in
+   Lisp Language. The most signficant feature of LISP is its description of
+   processes called procedures can themselves be manipuated as LISP data. The
+   importance of this is that there are powerful progarm design techinques which
+   rely on the ability to blur the traditional distinction between passive and
+   active processes. A Lisp program consist of large number of relatively simple
+   procedures. The interpreter maintains memory which consist of name-object
+   pair. This memory is called the environment (more precisely /global
+   environment/). An /environment/ is the /context/ in which /expressions/ are
+   evaluated.
+   A /combination/ is an expression formed by list of expressions delimited
+   within paranthesis which denotes procedure application.
+   
+   #+BEGIN_SRC scheme
+     (+ 2 3 (* 2 3))
+   #+END_SRC
+
+   Above snippet also shows how scheme provides a way to consturct complex
+   expressions from simpler ones by nesting combinations.
+
+   A /special form/ is an exception to general evaluation rule.
+
+   #+BEGIN_SRC scheme
+     (define x 24)
+     (define (sqrt x) (* x x))
+   #+END_SRC
+   
+   Above snippet shows ~define~ one of several means of abstractions provided by
+   scheme which allow us to refer to complex expressions by means of variable.
+
+   The general form of procedure defintion is
+
+   ~(define (<name> <formal parameters>) <body>)~
+
+   The distinction between procedure and function is the difference between
+   imperative and declarative knowledge. In mathematics we usually deal with
+   decraltive despcriptions but computer science on the other hand requires
+   imperative knowledge i.e. how to compute things.
+
+   Newton's Approximation Procedure for finding square roots says whenever we
+   have a guess y of the square root of number x, we can better that guess by
+   taking an average y with x/y.
+** Recursion
+   Lets look at the procedure of factorial in following ways
+   
+   #+begin_src scheme
+     (define (factorial n)
+       (if (or (= n 0) (= n 1))
+           1
+           (* n (factorial (- n 1)))))
+   #+end_src 
+
+   Above snippet is an example of linearly recursive process defined by a
+   recursive procedure. 
+
+   On the othe hand the snippet below is an example of linearly iterative
+   process described by recursive procedure.
+
+   #+begin_src scheme
+     (define (factorial-mod n)
+       (define (fact-iter result count)
+         (if (> count n)
+             result
+             (fact-iter (* result count)
+                        (+ count 1)))))
+   #+end_src 
+
+   The fact that both procedures are recursive is due to fact that in both cases
+   the function refers to itself. But the way they evolve are compeltely
+   different.
+
+   One reason that the distinction between process and procedure may be
+   confusing is that most implemenation of common languages are designed in such
+   a way that the interpretation of any recursive procedure consumes an amount
+   of memory that grows with the number of calls, even when the process
+   descirbed is, in principle iterative As a consequence these languages resort
+   to special purpose looping construct such as ~for~, ~while~, ~until~ to
+   implement iterative procedures. But Scheme will execute an iterative
+   process in constant space even if the iterative process is described by the
+   recursive procedure. An implementation with this property is called
+   *tail-recursive*. IEEE standard of Scheme requires that its implementation be
+   tail recursive.

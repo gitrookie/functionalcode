@@ -1,0 +1,12 @@
+* Scheme
+* General Notes
+* Functions
+  Function are defined in the following way
+  
+  #+begin_src scheme
+    (define (factorial n)
+      (if (or (= n 0) (= n 1))
+          1
+          (* n (factorial (- n 1)))))
+  #+end_src
+* 

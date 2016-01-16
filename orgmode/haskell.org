@@ -1,0 +1,270 @@
+* Namespaces
+  There are six kinds of names in haskell.
+  1. Variables
+  2. Constructors
+  3. Type Variables
+  4. Type Constructors
+  5. Type Classes
+  6. Modules
+  The names of variables and type variables begin with lower case letters. All
+  other names begin with upper case letters.
+  An identifier must not be used as the name of a type constructor and a class
+  in same scope.
+* Free Variable
+  A variable that is not bound is called a /free variable/.
+
+  #+BEGIN_SRC haskell
+    (\x -> x y)
+  #+END_SRC
+  
+  In above code y is free variable. Wether the variable is free or not depends
+  upon context in which expression is evaluated.
+* Thunk
+  A /thunk/ is unevaluated expression. It is used in haskell system that
+  implements non-strict semantics by lazy evaluation. A lazy run-time system
+  doesnt evaluate a thunk unless it has to. Expressions are translated into a
+  graph (not a tree this enables sharing and infinite lists) and a Spineless
+  Tagless G-machine /reduces/ it chuking out any unneeded thunk, unevaluated.
+* Modules
+  A haskell module consist of many of the various declarations which occur in
+  arbitray order but import declarations must appear first. The declarations are
+  fixity declarations, data and type declarations, class and instance
+  declarations, type signatures, function definitions and pattern bindings. 
+  A haskell program consist of collection of *modules*. A module in haskell
+  serve the dual purpose of *controlling namespaces* and *creating abstract*
+  *data types*. Modules are not *first-class*. Modules names are alphanumeric
+  and must begin with Uppercase letter. Namespace of modules is flat.
+  Techinically speaking module is one big declaration which begins with keyword
+  module. 
+* Declarations vs Expressions
+  There are two ways of writing functional programs and both the style are
+  supported by Haskell
+** Declarations
+   One Formulate an alogrithm in terms of several equations that shall be satisfied
+** Expressions
+   One compose big expressions from small expressions
+* IO
+  Haskell IO system is built on daunting mathematical foundation: *monads*.
+* Types, Values
+  Haskell is a purely functional language therefore all computations are done by
+  evaluating *expressions* to yield a *value*. Every value has an associated
+  *static* type. Intitutively we can think of types as set of values. All well
+  formed expression has types and are found at compile time by a process called
+  type inference.
+
+  *Type Expression* denote type values or just types. Haskell types are not first
+  class.
+
+  Function in Haskell are normally defined as series of equations. A function
+  can be defined by the single equation as follows
+  
+  #+begin_src haskell
+    inc :: Num => a -> Integer
+    inc c = c + 1
+  #+end_src
+
+  An equation is an example of declaration. Another kind of declaration is type
+  expression declaration.
+
+  #+begin_src haskell
+      inc :: Integer -> Integer
+  #+end_src
+** Polymorphic Types
+   Haskell also incorporates polymorphic types--types that are universally
+   quantified over all types. Polymorphic type expressions essentially describe
+   families of types. Identifiers such as above are called *type variables*.
+
+   With polymorphic types some types are more *general* than others. For
+   instance [a] is more general than [Char]. In other words latter type can be
+   derived from former by suitable substitution for a. Haskell type system has
+   two important properties:
+   1. Every well typed expression is gauranteed to have unique *principal* type.
+   2. Principal type can be inferred automatically
+
+** User Defined Types
+   We can define our own types using *data* declaration.
+
+** Data Constructor and Type Constructor
+   Consider the following sippet of code which declares an algerbriac data type
+   called LispVal
+
+   #+begin_src haskell
+
+     data LispVal = Atom String
+       | List [LispVal]
+       | DottedList [LispVal] LispVal
+       | Number Integer
+       | String String
+       | Bool Bool
+
+   #+end_src 
+
+   Data Constructor and type have different namespaces, so they can
+   have same name.
+* I/O Actions
+  When Programming in Haskell and we want to do something that has a side
+  effect, something that affects the world in some ways, we use
+  *actions*. Actions are values in the haskell language, much like number three,
+  the string "hello world" or the function ~map~. They can be bound to variable,
+  passed to function and can be result of functions.
+
+  Like other haskell value every action has a type. There are many kind of
+  actions of which IO Action is one used for input and output. The type of
+  action reflects kind of action (IO) as well as type of value it provides as a
+  result. Infact all IO actions will have a type IO a for some type a. When an
+  action doesn't provide any useful data back to the program the unit type
+  (written ()) is used to denote the result.
+
+  While actions can result in values which are used by the program, they donot
+  take any arguments. Consider ~putStrln~ its type is
+  ~putStrln :: [Char] -> IO ()~
+  putStrln takes an argument but it is not an action its a function. It takes
+  one argument and return an action of type IO (). But ~putStrln "Hello"~ is an
+  action. Action are like directions. They specify something that can be
+  done. They are not active in and of themselves. They need to be "run" to make
+  something happen. Since ~putstrln "Hello"~ is an action we can store it in a
+  variable like any other value.
+  #+begin_src haskell
+      x = putStrLn "Hello"
+  #+end_src
+  Haskell only run one IO action in a program, the action is called ~main~.
+  
+** ~do~ block
+   We can combine simple actions to  perform complex actions. To combine actions
+   into a single action we use ~do~ block. When two IO actions are combined the
+   result is an IO action that, when invoked, performs the first action and then
+   performs the second action. If the first action has any side affects those
+   effects are visible to the second action when it is performed. IO actions can
+   return result to the program. For instance ~getLine~ returns line to the
+   program.
+
+   #+begin_src haskell
+     main :: IO ()
+     main = do
+       x <- getLine
+       putStrLn $ "You said " ++ x
+   #+end_src
+
+   Notice ~<-~ is used to bind and not an equal sign. The arrow indicates the
+   result of an action is being bound.
+
+   #+begin_src haskell
+     promptLine prompt = do
+       putStrLn "Enter the line"
+       getLine
+
+     main :: IO ()
+     main = do
+       line <- promptLine "Enter the line"
+       putStrLn $ "You said " ++ line
+   #+end_src
+
+   ~promptLine~ returns an action whose type is the result of last action,
+   ~getLine~.
+
+   In general we use ~<<~ if the actions don't return a value, ~>>=~ if you will
+   be immidiately passing that value into the next action and do-notation
+   otherwise. Rememeber each line of do block must have same type.
+
+* Combinators
+  In haskell combinator pattern is populary used to describe the idea of
+  organizing libraries centered around the idea of combining things. Usually
+  there is some type T, some functions for constructing primitive values of type
+  T, and some combinators which can combine values of type T in various ways to
+  build complex values of type T.
+* Pattern Matching
+  Patterns are not first class; there are only a fixed set of different kinds of
+  pattern. There is data constructor pattern.
+
+  Technically speaking formal parameters are also patterns-It is just that they
+  never fail to match a value. A side effect to successful matching is that they
+  are bound to value it is being matched against. Patterns which never fail to
+  match are called irreffutable in contrast to refutable pattern which fails to
+  match. There are three other kinds of irrefutable pattern.
+
+** As Pattern
+   Consider the following code snippet
+
+   #+begin_src haskell
+     f (x:xs) = x:x:xs
+
+     f @s(x:xs) = x:s
+   #+end_src
+
+** Wild Cards
+   They match anything but in case of formal parameters binds nothing.
+
+** Pattern Matching Semantics
+   Pattern Matching can succeed, fail or diverge.
+   *A sequence of gaurds provied for same pattern* as follows
+
+   #+begin_src haskell
+     sign x | x > 0 = 1
+            | x == 0 = 0
+            | x < 0 = -1
+   #+end_src
+
+* Case Expression
+  Pattern Matching provides a way to dispatch control based upon structural
+  properties of a value.
+* Function in Haskell
+  Below are some examples for writing functions in Haskell.
+  It demonstrates use of if-else, case and gaurds.
+  The code snippet below shows an example of recursive factorial procedure which
+  evolves into recursive process
+
+  #+begin_src haskell
+    factorialIf num = if (num == 0) || (num == 1)
+                      then 1
+                      else num * factorialIf (num - 1)
+
+    factorialCase num = case num of 0 -> 1
+                                    1 -> 1
+                                    _ -> num * factorialCase (num - 1)
+
+
+    factorialGaurds num | num == 0 = 1
+                        | num == 1 = 1
+                        | otherwise = num *factorialGaurds (num - 1)          
+  #+end_src
+
+  The code snippet below is an example of recursive factorial procedre which
+  evolves into an iterative process.
+  
+  #+begin_src haskell
+    factorialIter num = factIterative 1 1 num
+      where factIterative result counter num = if counter > num
+                                               then result
+                                               else factIterative (result * counter) (counter + 1) num
+
+  #+end_src
+* Folds
+* Monads
+  The IO system is constructed using a Monad.
+  The Prelude contains a number of classes defining monads as they are used in
+  Haskell. These classes are based upon monad construct in category
+  theory. While the category theoretic terminology provides the names of monadic
+  classes and operations, it is not necessary to delve into abstract mathematics
+  to get an intutive understanding of how to use monadic classes.
+
+  A monad is constructed on top of polymorphic type such as ~IO~.
+* Bind Operator (>>)
+  It is used behind the scenes of a ~do~ block to combine sequence of actions.
+* Algebraic Data Types  
+* TypeClasses
+  Class methods are treated as top level declaration in Haskell. They share
+  same namespace as ordinary variables; a name cannot be used to denote both a
+  class method and a variable or method in different class. TypeClasses admit
+  adhoc polymorphism or overloading.
+* Polymorphism
+  A value is polymorphic if there is more than one type it can have. It is key
+  feature of Haskell's type system. Two categories of polymorphism
+  1. *Parametric Polymorphism*: refers to when the type of value contains one or
+     more (unconstrained) type variables, so that value may adopt any type that
+     results from substituting those variables with concrete type. In Haskell
+     this means any type in which a type variable, denoted by a name in a type
+     begininning with a lowercase letter appears without constraints.
+  2. *Ad-hoc Polymorphism* is achieved in Haskell using typeclasses and class
+     instances. 
+
+  

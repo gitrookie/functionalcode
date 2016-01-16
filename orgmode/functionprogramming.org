@@ -1,0 +1,59 @@
+* Non Strict Semantics
+  An expression language is said to have non-strict semantics if expressions can
+  have a value even if some of their subexpressions do not. Haskell is one of
+  the few programming languages to have non-strict semantics. It is what allows
+  programs to work with conceptually infinite data structures. Haskell lets you
+  write your own control structures. 
+  
+  Any sufficiently capable programming language in /non-total/, which is to say
+  we can write expressions that donot produce a value common examples are
+  exception thrown, infinite loop etc.
+
+  #+BEGIN_SRC haskell
+    noreturn :: Integer -> Integer
+    noreturn x = negate (noreturn x)
+  #+END_SRC
+
+  #+BEGIN_SRC python
+    def noreturn(x):
+        while True:
+            x = -x
+
+        return x
+  #+END_SRC
+  Both function in Haskell and Python fails to produce value. In python the
+  following expression fails to return a value, because in order to consturct a
+  list, the interpreter tries to workout ~noreturn(5)~ which ofcourse donot
+  return a value. 
+
+  #+BEGIN_SRC python
+    2 in [2, 4, noreturn(5)]
+  #+END_SRC
+
+  This is called *innermost-first* evaluation: in order to call
+  a function with some arguments, you first have to calculate what all the
+  arguments are, starting from the innermost function call working
+  outerwards. The result is that python is strict in the sense that calling any
+  function with undefined arguments produces an undefined value. If the language
+  uses innermost-first evaluation, then it must have strict semantics.
+
+  In Haskell analogous expression
+
+  #+BEGIN_SRC haskell
+    elem 2 [2, 3, noreturn 5]
+  #+END_SRC
+
+  infact has the value ~True~. The program doesn;t have to compute ~noreturn 5~
+  because it is irrelevant to overall computation: only the value needed for the
+  result needs to be computed. This is called ~outermost-first~ evaulation. Such
+  functions are non strict.
+
+  Outermost-first evaluation is not the only way to have non-strict semantics: a
+  speculative evaluation strategy. Note also in order for a fucntion to be truly
+  non strict it must return something without inspecting its argument at all.
+
+  Non-Strict Semantics is not a performance feature. However major advantage
+  non-strict semantics over strictness is that you get to write more cleaner and
+  composable.
+
+  

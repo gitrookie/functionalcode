@@ -1,2 +1,10 @@
 # Emacs Backup Files
 *~
+*#
+
+# Windows exe files
+*exe
+
+# Haskell Intermediate Files
+*hi
+*o

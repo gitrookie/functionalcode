@@ -8,3 +8,6 @@
 # Haskell Intermediate Files
 *hi
 *o
+
+# Ignoring test.txt file
+test.txt

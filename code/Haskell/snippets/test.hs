@@ -82,7 +82,29 @@ instance BasicEq3 Color where
   isEqual1 _ _ = False
 
 
-main = do putStrLn "Enter the number: "
+-- main = do putStrLn "Enter the number: "
+--           inpStr <- getLine
+--           let inpDouble = (read inpStr)::Color
+--           putStrLn $ " square of number is " ++ show inpDouble
+
+-- Serialization using read and show typeclasses
+
+main = do putStrLn "Enter the data:"
           inpStr <- getLine
-          let inpDouble = (read inpStr)::Color
-          putStrLn $ " square of number is " ++ show inpDouble
+          putStrLn "Writing to File..."
+          writeFile "test" inpStr
+          putStrLn "Reading File..."
+          fileString <- readFile "test"
+          let x = (read fileString)::[Maybe Int]
+          putStrLn (show x)
+
+
+data MyType = MyType (Int -> Bool)
+
+foo1 x = x < 5
+
+data CannotShow = CannotShow
+  deriving (Show)
+
+data CannotDeriveShow = CannotDeriveShow CannotShow
+  deriving (Show)

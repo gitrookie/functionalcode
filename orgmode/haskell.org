@@ -104,9 +104,9 @@
 * I/O Actions
   When Programming in Haskell and we want to do something that has a side
   effect, something that affects the world in some ways, we use
-  *actions*. Actions are values in the haskell language, much like number three,
-  the string "hello world" or the function ~map~. They can be bound to variable,
-  passed to function and can be result of functions.
+  *actions*. *Actions are values* in the haskell language, much like number
+  three, the string "hello world" or the function ~map~. They can be bound to
+  variable, passed to function and can be result of functions.
 
   Like other haskell value every action has a type. There are many kind of
   actions of which IO Action is one used for input and output. The type of
@@ -256,6 +256,9 @@
   same namespace as ordinary variables; a name cannot be used to denote both a
   class method and a variable or method in different class. TypeClasses admit
   adhoc polymorphism or overloading.
+  ~Read~ and ~Show~ typeclasses are used for serilization in Haskell. ~show~
+  method of ~Show~ typeclass produces output that is both human readable and
+  machine readable and ~read~ method of ~Read~ typeclass 
 * Polymorphism
   A value is polymorphic if there is more than one type it can have. It is key
   feature of Haskell's type system. Two categories of polymorphism
@@ -265,6 +268,9 @@
      this means any type in which a type variable, denoted by a name in a type
      begininning with a lowercase letter appears without constraints.
   2. *Ad-hoc Polymorphism* is achieved in Haskell using typeclasses and class
-     instances. 
+     instances.
+* Laziness
+  In Haskell Non-strict semantics is implemented using Laziness.
+  *String Handling in Haskell is normally lazy, so ~read~ and ~show~ can be used
+  on quite large data structures without incident.
 
-  

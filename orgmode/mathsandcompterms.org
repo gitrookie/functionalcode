@@ -3,10 +3,24 @@
    It is theory that holds that statements of mathematics and logic
    can considered to be statements about consequences of certain string
    manipulation rules.
+* Object Persistence
+  Most Object ceases to exist as they go out of scope. This may be when the
+  function in which they were created terminates. It may be when the container
+  in which they reside is deleted. At any rate they can be expected to disappear
+  when the program exits. Persistence Objects are those which survive between
+  successive invocations of the program. A classic example is of database
+  records. 
 * S
 ** Syntactic Sugar
    Syntactic Forms which are alternative convenient surface structures for
    things that can be written in more uniform ways.
+** Serialization
+   It is the process of translating data structures or object state into a
+   format that can be stored (in a file or memory buffer or transmitted across
+   network) and reconstructed later in the same or another computer
+   environment. 
+   Serialization of object oriented objects donot include any of their
+   associated methods with which they were previously inextricably linked.
 * T
 ** Type System
    Collection of rules that assign a property called /type/ to various constructs

@@ -47,3 +47,5 @@
     
 *** Static Typing
 *** Type Inference
+*** 
+

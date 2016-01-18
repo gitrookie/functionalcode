@@ -240,13 +240,48 @@
   #+end_src
 * Folds
 * Monads
+  When complexity reaches a certain level, we start decomposing larger
+  computations into smaller ones. The quality of decomposition is measured by
+  how much coupling there is between the pieces, and how well we and the
+  compiler can control and verify it. There is overwhelming evidence that hidden
+  couplings are a major source of bugs in both single and multithreaded
+  programs. 
+  Pure functional programming reduces the coupling to the minimum--its just
+  plugging output of one function into another. However many traditional notions
+  of computations are expressed in a pseudo functional way;with procedures that
+  take arguments and return result but also do some non-functional things. There
+  is surprisingly large class of such computations that can be truned into pure
+  functions by just modifying their return types.
+
+  A Monad turns out to be a key of writing side-effecting programs in pure
+  functional languages. With monads we can use the type system to cleanly
+  separate out side effecting computations from ones that don't have a side
+  effect so that niether kind of computation interfere with other. So we get
+  all the benefits of functional programming for code that doesn't do
+  side-effects (type system gaurantees that they don't do side effects) while
+  still being able to do side effects when necessary.
+
+  *Monads are general tool for structuring various kinds of computation* in a
+  well behaved way. In many cases monadic code can be vastly shorter and more 
+  comprehensible than equivalent non-monadic code. So monads have an
+  applicability that goes way beyond helping us deal with side-effects in
+  functional languages.
+
+  *Monads are generalization of functions, function application, and function*
+  *composition to allow them to deal with richer notions of computation than*
+  *standard function.*
+
+  A /monad/ describes the way of transforming the return type of a particular
+  kind of computation into a fancier /monadic type/. Functions that return a
+  monadic type are called monadic functions.
+  ~do~ notation simplifies the syntax of composing multiple monadic functions.
+
   The IO system is constructed using a Monad.
   The Prelude contains a number of classes defining monads as they are used in
   Haskell. These classes are based upon monad construct in category
   theory. While the category theoretic terminology provides the names of monadic
   classes and operations, it is not necessary to delve into abstract mathematics
   to get an intutive understanding of how to use monadic classes.
-
   A monad is constructed on top of polymorphic type such as ~IO~.
 * Bind Operator (>>)
   It is used behind the scenes of a ~do~ block to combine sequence of actions.

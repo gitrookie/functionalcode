@@ -270,6 +270,28 @@
   *Monads are generalization of functions, function application, and function*
   *composition to allow them to deal with richer notions of computation than*
   *standard function.*
+  
+  What is *Notions of Computations*
+  The simplest and well behaved notion of computation is ordinary (pure)
+  functions. A pure function is a rule which for a particular input always
+  generate exact same output. In Haskell function have well defined type
+  signature which means there are types a and b such that function maps a value
+  of type a to a value of type b. We can express this in Haskell notation as
+  follows
+  
+  #+begin_src haskell
+    f :: a -> b
+  #+end_src
+  
+  where the ~::~ means "has the following type". So the function has the
+  functional type ~a -> b~, which means that it takes in a value of type a and
+  returns a value of type b.
+  Some other notions of computations
+  1. may do file or terminal input/output
+  2. may raise exceptions
+  3. may read or write shared state(local or gloabl)
+  4. may fail to produce any results
+  5. may multiple results at the same time.
 
   A /monad/ describes the way of transforming the return type of a particular
   kind of computation into a fancier /monadic type/. Functions that return a
@@ -283,6 +305,45 @@
   classes and operations, it is not necessary to delve into abstract mathematics
   to get an intutive understanding of how to use monadic classes.
   A monad is constructed on top of polymorphic type such as ~IO~.
+** Monadic Values and Monadic Functions
+   The point of monads is to generalize the notion of function application and
+   function compositions to notions of computation which are different pure
+   functions. We might want to write the type of this extended function
+   something like below
+
+   #+begin_src haskell
+     f :: a --[something else] --> b
+   #+end_src
+
+   for extended function f, input type a and output type b. The /something else/
+   is specific to particuar notion of computation. In Haskell special notion of
+   computation correspond to particular monad. We can refer to these functions
+   as monadic functions.
+
+   In Haskell monads always have the form
+
+   #+begin_src haskell
+     f :: a -> mb
+   #+end_src
+   
+   In code above f is a pure function which takes input value of type a and
+   returns output value of type mb. So in Haskell these monadic functions are
+   represented as pure functions with a funky monadic return type;put
+   differently, the pure function takes in regular values and return funky
+   "monadic values". In notation "m b" b is some Haskell type, and m will
+   represent some kind of monad. In Haskell m has to be /type constructor/,
+   which is basically function on types. It takes type argument and return a
+   type. *Generally we say that f is a function from a to b in IO monad.*
+
+   Note: There is related notion called comonad which uses function like ~f:: c
+   a -> b~ for some comonad c.
+
+   Consider the /notion of/ list  of Int. The /list of/ part can be thought as a
+   type constructor which takes a particular type ~Int~ as and returns new type
+   ~[Int]~. Infact any polymorphic type in Haskell has a corresponding type
+   constructor.
+** Fundamental Monadic Operation
+   
 * Bind Operator (>>)
   It is used behind the scenes of a ~do~ block to combine sequence of actions.
 * Algebraic Data Types  
@@ -308,4 +369,5 @@
   In Haskell Non-strict semantics is implemented using Laziness.
   *String Handling in Haskell is normally lazy, so ~read~ and ~show~ can be used
   on quite large data structures without incident.
-
+* Currying
+  

@@ -271,7 +271,7 @@
   *composition to allow them to deal with richer notions of computation than*
   *standard function.*
   
-  What is *Notions of Computations*
+  What is *Notions of Computations*?
   The simplest and well behaved notion of computation is ordinary (pure)
   functions. A pure function is a rule which for a particular input always
   generate exact same output. In Haskell function have well defined type
@@ -342,6 +342,91 @@
    type constructor which takes a particular type ~Int~ as and returns new type
    ~[Int]~. Infact any polymorphic type in Haskell has a corresponding type
    constructor.
+   One the simplest is polymorphic ~Maybe~ type.
+
+   #+begin_src haskell
+     data Maybe a = Just a | Nothing   
+   #+end_src 
+   
+   which says ~Maybe~ is a type constructor which takes input ~a~ which is a
+   type and and produces another type as output. For example
+   
+   #+begin_src haskell
+     data Maybe Int = Just Int | Nothing
+   #+end_src
+   
+   So ~Maybe~ itself is a function on types mapping one input type to output
+   type.  There is a techincal name for this: the type constructor ~Maybe~ has
+   the kind * -> *. A kind is type of types; primitive types have the kind *,
+   which just means that they aren't type functions (i.e. type constructors)
+   
+   So Monads, as represented in Haskell are type constructors turning input type
+   into new type. So the ~IO~ monad is a type constructor and IO String, IO Bool
+   are valid haskell types. Similarly ~Maybe~ is a type constructor and ~Maybe
+   Bool~, ~Maybe Int~ are valid Haskell types.
+
+   *Note:* Monads in Haskell are type constructors;not all type constructors are
+   monads. As we will se Monads have to be type constructors for which specific
+   operations are defined and for which specific monad laws hold.
+
+   *Big Question* What does values that have monadic type represents. Lets call
+   them *monadic values*(not standard terminology). What does value of ~IO
+   float~ or ~IO String~ represent.
+
+   *Recap*
+   1. There is familiar concept of pure functions;a function which does nothing
+      more than converting an input value of some type to an output value.
+   2. Then there are special kinds of functions that do something else besides
+      converting input values into output values. That something else do file IO
+      or terminal IO, raise exceptions, interacting with local or global state,
+      possibly fail, or return more than one result etc. Each of these special
+      kinds of function corresponds to particular monad. Let's refer them as
+      *monadic functions*.
+   3. Haksell represents monadic functions as pure functions which convert input
+      value of some type into an output value of special monadic type. Let's
+      call these output values as *monadic values*.
+
+      *Problem Restatement*
+      What do monadic values really represent?.
+      *Answer* They dont really represent anything intutive. The intutive
+      concept is notion of monadic functions. The concept of monadic value is
+      not intutive;its just how haskell has chosen to represent the output of
+      monadic functions.
+
+   Nevertheless in Haskell there two ways of trying to explain the notion of
+   monadic value
+   1. A monadic value of type ~m a~ is some kind of action that does /something
+      else/ and returns value of type a.
+   2. A monadic value of type a is like a container that stores value of type
+      a. 
+
+   Let's take our notion of monadic functions as our starting point.
+
+   #+begin_src haskell
+     f :: a -> mb
+   #+end_src
+
+   Then ~f x~, where x has type a, would have type ~m b~
+
+   ~x :: a~
+   ~f x :: m b~
+
+   Now ~f x~ is a monadic value which is not very intutive.
+   Consider another function ~g~ as follows
+   #+begin_src haskell
+     g :: a -> () -> a
+     g x () = x
+   #+end_src
+
+   ~g (f x)~ has type ~() -> m b~. In other words, its a function which takes a
+   unit value as argument and returns monadic value. But looked at another way,
+   its a monadic function which converts a unit value into a value of type b
+   also doing something else in the process.
+
+   We can understand the monadic value construct in Haskell in a way that it is
+   a function of type ~() -> m b~ i.e. a function which maps unit value to a
+   value of type ~b~ doing something else in the process.
+
 ** Fundamental Monadic Operation
    
 * Bind Operator (>>)

@@ -109,3 +109,6 @@ data CannotShow = CannotShow
 data CannotDeriveShow = CannotDeriveShow CannotShow
   deriving (Show)
  
+
+g :: a -> () -> a
+g x () = x

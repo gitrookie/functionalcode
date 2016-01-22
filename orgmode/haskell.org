@@ -428,6 +428,13 @@
    value of type ~b~ doing something else in the process.
 
 ** Fundamental Monadic Operation
+   One of the keys in functional programming is the ability to compose new
+   functions. Functional Programmers talk about /composability/ all the time,
+   with the implication that if some aspect of a programming language isn't
+   composable, its probably not worth much.
+
+   In Haskell we use the type function to give us gaurantee that pure functions
+   are actually pure.
    
 * Bind Operator (>>)
   It is used behind the scenes of a ~do~ block to combine sequence of actions.

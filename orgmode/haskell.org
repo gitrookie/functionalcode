@@ -253,7 +253,10 @@
   is surprisingly large class of such computations that can be truned into pure
   functions by just modifying their return types.
 
-  A Monad turns out to be a key of writing side-effecting programs in pure
+  A pure function is well behaved;if we give a function a certain input it will
+  always generate exactly same output.
+
+  A Monad turns out to be a key of writing *side-effecting* programs in pure
   functional languages. With monads we can use the type system to cleanly
   separate out side effecting computations from ones that don't have a side
   effect so that niether kind of computation interfere with other. So we get
@@ -286,28 +289,29 @@
   where the ~::~ means "has the following type". So the function has the
   functional type ~a -> b~, which means that it takes in a value of type a and
   returns a value of type b.
-  Some other notions of computations
+  Some other notions of computations (also refered to as side effects)
   1. may do file or terminal input/output
   2. may raise exceptions
   3. may read or write shared state(local or gloabl)
   4. may fail to produce any results
-  5. may multiple results at the same time.
+  5. may produce multiple results at the same time.
 
   A /monad/ describes the way of transforming the return type of a particular
   kind of computation into a fancier /monadic type/. Functions that return a
   monadic type are called monadic functions.
   ~do~ notation simplifies the syntax of composing multiple monadic functions.
 
-  The IO system is constructed using a Monad.
+  The *IO system* in Haskell and many other functional languages is constructed
+  using a Monad.
+
   The Prelude contains a number of classes defining monads as they are used in
-  Haskell. These classes are based upon monad construct in category
-  theory. While the category theoretic terminology provides the names of monadic
+  Haskell. These classes are based upon monad construct in *category theory*
+  While the category theoretic terminology provides the names of monadic
   classes and operations, it is not necessary to delve into abstract mathematics
   to get an intutive understanding of how to use monadic classes.
-  A monad is constructed on top of polymorphic type such as ~IO~.
 ** Monadic Values and Monadic Functions
    The point of monads is to generalize the notion of function application and
-   function compositions to notions of computation which are different pure
+   function compositions to notions of computation which are different from pure
    functions. We might want to write the type of this extended function
    something like below
 
@@ -332,8 +336,8 @@
    differently, the pure function takes in regular values and return funky
    "monadic values". In notation "m b" b is some Haskell type, and m will
    represent some kind of monad. In Haskell m has to be /type constructor/,
-   which is basically function on types. It takes type argument and return a
-   type. *Generally we say that f is a function from a to b in IO monad.*
+   which is basically function on types. It takes type argument and returns a
+   new type. *Generally we say that f is a function from a to b in IO monad.*
 
    Note: There is related notion called comonad which uses function like ~f:: c
    a -> b~ for some comonad c.
@@ -356,7 +360,7 @@
    #+end_src
    
    So ~Maybe~ itself is a function on types mapping one input type to output
-   type.  There is a techincal name for this: the type constructor ~Maybe~ has
+   type. There is a techincal name for this: the type constructor ~Maybe~ has
    the kind * -> *. A kind is type of types; primitive types have the kind *,
    which just means that they aren't type functions (i.e. type constructors)
    
@@ -436,8 +440,11 @@
    In Haskell we use the type function to give us gaurantee that pure functions
    are actually pure.
    
-* Bind Operator (>>)
-  It is used behind the scenes of a ~do~ block to combine sequence of actions.
+* Operator
+** Operator Associativity
+   
+** Bind Operator (>>)
+   It is used behind the scenes of a ~do~ block to combine sequence of actions.
 * Algebraic Data Types  
 * TypeClasses
   Class methods are treated as top level declaration in Haskell. They share

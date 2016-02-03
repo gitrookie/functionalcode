@@ -437,9 +437,85 @@
    with the implication that if some aspect of a programming language isn't
    composable, its probably not worth much.
 
-   In Haskell we use the type function to give us gaurantee that pure functions
-   are actually pure.
+   In Haskell we use the type system to give us gaurantee that pure functions
+   are actually pure. It also means that there is no ~extract~ functions such
+   that 
+
+   ~extract :: IO b -> b~
+
+   If such a function exists, it will allow us to construct a pure function from
+   monadic functions which will destory the purity of Haskell.
+
+   ~f :: a -> IO b~
+   ~g :: b -> IO c~
+   ~h :: a -> c~
+
+   ~h = g . extract . f~
+
+   Now if we have a function ~mapply~ with the following type signature
    
+   ~mapply :: IO b -> (b -> IO c) -> IO c~
+
+   we can compose two monadic functions f and g in the following way
+
+   ~f :: a -> IO b~
+   ~g :: b -> IO c~
+   
+   Our goal is to compose a function ~h~ from ~f~ and ~g~ such that
+   
+   ~h = f `mcompose` g~
+
+   ~h x = mapply (f x) g~
+
+   ~mcompose f g x = (f x) `mapply`  g~
+
+   ~mapply~ is one of the two fundamental monadic oprations. It is normally
+   called *bind* and is written as infix operator with symbol ~>>=~.
+
+   ~>>= :: m a -> (a -> mb) -> m b~
+
+   where a is any type and m is any monadic type constructor.
+
+   Using >>= operator we can write h as follows
+   
+   ~h = f x >>= g~
+
+   Suppose we want to compose a monadic function with non-monadic function.
+
+   ~f :: a -> mb~
+   ~g :: b -> c~
+
+   With the ~extract~ function we can compose function as follows to get a pure
+   function
+
+   ~h = g . extract . f~
+
+   But we are not allowed to do this. if we have a ~return~ function as follows
+   
+   ~return :: (b -> c) -> (b -> m c)~
+
+   then we can compose function f and g in the following way
+
+   ~h  = f >=> (return . g)~
+
+** Monad type class
+   Following code snippet is the full declaration of full monadic type class.
+
+   #+begin_src haskell
+        class Monad m where
+          (>>=) :: m a -> (a -> mb) -> mb
+          return :: a -> m a
+          (>>) :: m a -> m b -> m b
+          fail :: String -> m a
+   #+end_src
+
+*** Monadic Laws
+    1. return >=> f == f (return is an identity for monadic composition)
+    2. f >=> return == f 
+    3. (f >=> g) >=> h == f >=> (g >=> h) (monadic composition is associative)
+
+    
+    
 * Operator
 ** Operator Associativity
    

@@ -264,6 +264,10 @@
   side-effects (type system gaurantees that they don't do side effects) while
   still being able to do side effects when necessary.
 
+  Pure Functional Languages doesn't allow us to directly write side-effecting
+  code. These languages make sure that their type system doesn't allow this to
+  happen. 
+
   *Monads are general tool for structuring various kinds of computation* in a
   well behaved way. In many cases monadic code can be vastly shorter and more 
   comprehensible than equivalent non-monadic code. So monads have an
@@ -276,11 +280,11 @@
   
   What is *Notions of Computations*?
   The simplest and well behaved notion of computation is ordinary (pure)
-  functions. A pure function is a rule which for a particular input always
-  generate exact same output. In Haskell function have well defined type
-  signature which means there are types a and b such that function maps a value
-  of type a to a value of type b. We can express this in Haskell notation as
-  follows
+  functions. *A pure function is a rule which for a particular input always*
+  *generate exact same output*. In *strongly-typed* languages like Haskell
+  function have well defined type signature which means there are types a and b
+  such that function maps a value of type ~a~ to a value of type ~b~. We can
+  express this in Haskell notation as follows.
   
   #+begin_src haskell
     f :: a -> b
@@ -515,7 +519,6 @@
     3. (f >=> g) >=> h == f >=> (g >=> h) (monadic composition is associative)
 
     
-    
 * Operator
 ** Operator Associativity
    
@@ -545,4 +548,7 @@
   *String Handling in Haskell is normally lazy, so ~read~ and ~show~ can be used
   on quite large data structures without incident.
 * Currying
+  A way of representing functions which take multiple arguments as functions of
+  single arguments which returns function is called *currying*. Haskell function
+  automatically curry their arguments.
   

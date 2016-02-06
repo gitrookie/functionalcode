@@ -22,3 +22,15 @@ h x = if x `mod` 5 == 0
       else Just (5 * x)
 
 k = f >=> g >=> h
+
+
+mJust :: a -> Maybe a
+mJust x = return x
+
+f1 :: Int -> [Int]
+f1 x = [x-1, x, x+1]
+
+g1 :: Int -> [Int]
+g1 x = [-x, x]
+
+h1 = f1 >=> g1

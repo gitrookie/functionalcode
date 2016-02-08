@@ -1,0 +1,7 @@
+* Introduction
+  Using categorical construction in the context of computing science.
+  Modelling several linguistic or computational phenomena categorically.
+
+  Categories orginally arose in mathematics out of need of a formalism to
+  describe the passage from one type of mathematical structure to another.
+  A category is mathematical structure.

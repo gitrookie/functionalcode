@@ -3,7 +3,17 @@ import Control.Monad
 main :: IO ()
 -- main = putStrLn "Hello" >> putStrLn "How are you"
 -- main = getLine >>= (\x -> putStrLn x)
-main = readandPrintLineTwice >> readandPrintLineTwice
+-- main = readandPrintLineTwice >> readandPrintLineTwice
+-- main = readAndPrintLine
+-- main = putStrLn "Hey there" >>= foo
+-- main = getLine >>= putStrLn >>= foo
+-- main = bar "Hey there!" >>= foo
+-- main = (bar >=> foo) "Hey there!!!!!"
+-- main = readLine >>= putStrLn
+main = writeFile "file.txt" "This is the line written through file."
+
+bar :: [Char] -> IO ()
+bar = \x -> putStrLn x
 
 readandPrintLineTwice :: IO ()
 readandPrintLineTwice = getLine >>= \s -> putStrLn s >> putStrLn s
@@ -34,3 +44,13 @@ g1 :: Int -> [Int]
 g1 x = [-x, x]
 
 h1 = f1 >=> g1
+
+
+readAndPrintLine :: IO ()
+readAndPrintLine = getLine >>= putStrLn
+
+foo :: () -> IO ()
+foo () = putStrLn "How are you!!"
+
+readLine :: IO String
+readLine = readFile "file.txt"

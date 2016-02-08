@@ -1,3 +1,6 @@
+* Haskell Type System
+  A powerful feature of type system is that we can deduce properties of
+  functions by looking at their type.
 * Namespaces
   There are six kinds of names in haskell.
   1. Variables
@@ -449,6 +452,8 @@
 
    If such a function exists, it will allow us to construct a pure function from
    monadic functions which will destory the purity of Haskell.
+   But such function do exist for some monads. In general such function doesn't
+   exist.
 
    ~f :: a -> IO b~
    ~g :: b -> IO c~
@@ -515,10 +520,9 @@
 
 *** Monadic Laws
     1. return >=> f == f (return is an identity for monadic composition)
-    2. f >=> return == f 
+    2. f >=> return == f (right identity)
     3. (f >=> g) >=> h == f >=> (g >=> h) (monadic composition is associative)
 
-    
 * Operator
 ** Operator Associativity
    
@@ -533,6 +537,10 @@
   ~Read~ and ~Show~ typeclasses are used for serilization in Haskell. ~show~
   method of ~Show~ typeclass produces output that is both human readable and
   machine readable and ~read~ method of ~Read~ typeclass 
+* Constructor Classes
+  A flexible type system which combines overloading and higher order
+  polymorphism in an implicitly typed language using a system of /constructor
+  classes/ - a generlization of type classes in Haskell.
 * Polymorphism
   A value is polymorphic if there is more than one type it can have. It is key
   feature of Haskell's type system. Two categories of polymorphism
@@ -551,4 +559,13 @@
   A way of representing functions which take multiple arguments as functions of
   single arguments which returns function is called *currying*. Haskell function
   automatically curry their arguments.
-  
+* Pointfree Style
+  It helps writer think about composing functions(higher level) rather than
+  shuffling data (low level)
+* Monomorphism Restriction
+  The defintion is fairly technical. To first approximation we cannot overload a
+  function unless you provide an explicit type signature.
+* Functors
+* Function Binding
+* Pattern Binding
+

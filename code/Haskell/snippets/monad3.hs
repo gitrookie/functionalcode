@@ -10,7 +10,14 @@ main :: IO ()
 -- main = bar "Hey there!" >>= foo
 -- main = (bar >=> foo) "Hey there!!!!!"
 -- main = readLine >>= putStrLn
-main = writeFile "file.txt" "This is the line written through file."
+-- main = writeFile "file.txt" "This is the line written through file."
+-- main = do
+--   s <- getLine
+--   putStrLn s
+
+main = do
+  putStrLn "how are you"
+  putStrLn "I am fine"
 
 bar :: [Char] -> IO ()
 bar = \x -> putStrLn x
@@ -54,3 +61,38 @@ foo () = putStrLn "How are you!!"
 
 readLine :: IO String
 readLine = readFile "file.txt"
+
+
+mtest :: Maybe Int -> Maybe Int -> Maybe Int
+mtest x y = case x of
+  Nothing -> Nothing
+  Just p -> case y of
+    Nothing -> Nothing
+    Just q -> Just (p + q)
+
+
+monadAdd :: Maybe Int -> Maybe Int -> Maybe Int
+monadAdd x y = do a <- x
+                  b <- y
+                  return (a + b)
+
+
+
+-- List Monad
+
+lf :: Int -> [Int]
+lf x = [x-1, x, x+1]
+
+lg :: Int -> [Int]
+lg x = [-x, x]
+
+lh = lf >=> lg
+
+lr :: Int -> [Int]
+
+lr x = return x
+
+dice :: [Int] -> [Int] -> [(Int, Int)]
+dice a b = do x <- a
+              y <- b
+              if x + y == 7 then return (x, y) else []

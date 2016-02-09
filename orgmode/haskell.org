@@ -522,7 +522,9 @@
     1. return >=> f == f (return is an identity for monadic composition)
     2. f >=> return == f (right identity)
     3. (f >=> g) >=> h == f >=> (g >=> h) (monadic composition is associative)
-
+    
+    Haskell doesn't enforce the monad laws. The only thing haskell cares about
+    is the types of ~bind~ and ~return~ functions.
 * Operator
 ** Operator Associativity
    
@@ -568,4 +570,4 @@
 * Functors
 * Function Binding
 * Pattern Binding
-
+* Existential Type

@@ -525,6 +525,17 @@
     
     Haskell doesn't enforce the monad laws. The only thing haskell cares about
     is the types of ~bind~ and ~return~ functions.
+
+** State Monads
+   The basic idea of state monad is to represent function which interact with
+   local state variables or global state variables. Essentially they allow us to
+   simulate some aspect of imperative programming in a purely functional
+   setting.
+   It accepts the tuple of state (of type s) plus the input value (of type a) as
+   its input and outputs a tuple of state(still of type s, though values of
+   component may be different) and output of value (of type b). This approach to
+   modelling state in purely functional language is called *threading the state*
+   
 * Operator
 ** Operator Associativity
    
@@ -571,3 +582,9 @@
 * Function Binding
 * Pattern Binding
 * Existential Type
+* Constructor
+  A constructor can mean
+  - Type Constructor
+  - Data/Value Constructor
+  A ~data~ constructor introduces one or more ~type~ constructor and one or more
+  value constructor for each type constructor.

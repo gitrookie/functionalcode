@@ -96,3 +96,50 @@ dice :: [Int] -> [Int] -> [(Int, Int)]
 dice a b = do x <- a
               y <- b
               if x + y == 7 then return (x, y) else []
+
+
+listSum :: [Int] -> [Int] -> [Int]
+listSum (x:xs) (y:ys) = x+y : listSum xs ys
+listSum [] b = b
+listSum a [] = a
+
+
+safeDivide :: Int -> Int -> Either String Int
+safeDivide _ 0 = Left "Divide by Zero"
+safeDivide x y = Right (x `div` y)
+
+
+sduse :: Int -> Int -> Int -> Either String Int
+sduse x y z = case y `safeDivide` z of Left msg -> Left msg
+                                       Right r -> Right (x + r)
+
+
+safeDivide2 :: Int -> Int -> Either String Int
+safeDivide2  _ 0 = Left "Divide By Zero"
+safeDivide2 x y | x `mod` y /= 0 = Left "Not Divisible"
+safeDivide2 x y = Right (x `div` y)
+
+
+sduse2 :: Int -> Int -> Int -> Either String Int
+sduse2 x y z = case y `safeDivide2` z of Left "Divide By Zero" -> Left "Divide By Zero"
+                                         Left "Not Divisible"  -> Left "Not Divsible"
+                                         Right r               -> Right (x + r)
+
+
+
+data AirthmeticError = DivideByZero | NotDivisible
+  deriving (Show)
+
+safeDivide3 :: Int -> Int -> Either AirthmeticError Int
+safeDivide3 _ 0 = Left DivideByZero
+safeDivide3 x y | x `mod` y /= 0 = Left NotDivisible
+safeDivide3 x y = Right (x `div` y)
+
+
+sduse3 :: Int -> Int -> Int -> Either AirthmeticError Int
+sduse3 x y z = case y `safeDivide3` z of Left DivideByZero -> Left DivideByZero
+                                         Left NotDivisible -> Left NotDivisible
+                                         Right r           -> Right (x + r)
+
+
+f'= \x -> \y -> x * 2 + y

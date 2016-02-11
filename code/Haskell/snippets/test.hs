@@ -112,3 +112,11 @@ data CannotDeriveShow = CannotDeriveShow CannotShow
 
 g :: a -> () -> a
 g x () = x
+
+sumList xs ys = map add $ zip xs ys
+  where add (x, y) = x + y
+
+
+listComb xs ys = do x <- xs
+                    y <- ys
+                    return (x, y)

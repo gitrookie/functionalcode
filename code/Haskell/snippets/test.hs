@@ -120,3 +120,5 @@ sumList xs ys = map add $ zip xs ys
 listComb xs ys = do x <- xs
                     y <- ys
                     return (x, y)
+
+mymap f = foldl (\x -> f x) 0

@@ -1,0 +1,2 @@
+* Introduction
+  Functional Programming conveys a view of programming as mathematical activity.

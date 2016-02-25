@@ -1,6 +1,5 @@
 -- Haskell uses normal order evaluation
 
-p = p
 
 test x y = if x == 0
               then 0
@@ -43,7 +42,7 @@ factorialGaurds num | num == 0 = 1
 
 -- Factorial Using Recursive Procedure and Iterative Process
 -- Uses Tail Call Optimization
-  factorialIter num = factIterative 1 1 num
+factorialIter num = factIterative 1 1 num
   where factIterative result counter num = if counter > num
                                            then result
                                            else factIterative (result * counter) (counter + 1) num
@@ -54,3 +53,61 @@ factorialGaurds num | num == 0 = 1
 fib n | n == 0 = 0
       | n == 1 = 1
       | otherwise = fib (n-1) + fib (n-2)
+
+consecutiveSum (x:y:xs) = x+y : consecutiveSum (y:xs)
+consecutiveSum (x:xs) = []
+consecutiveSum [] = []
+
+
+pascalTriangle num = if num == 1
+                     then [1]
+                     else [1] ++ (consecutiveSum $ pascalTriangle (num-1)) ++ [1]
+
+expr base power = expHelp base power 1
+  where expHelp base power result =  if power == 0
+                                     then result
+                                     else expHelp base (power-1) (result * base)
+
+expfast base power | power == 0 = 1
+                   | even power = (expfast base (power `div` 2)) ** 2
+                   | otherwise  = base * expfast base (power-1)
+
+expSquare base power = expSquare base power 1
+  where expSquare base power a | power == 0 = a
+                               | even power = expSquare (base * base) (power `div` 2) a
+                               | otherwise =  expSquare (base) (power-1) (a * base)
+
+mul a b | b == 1 = a
+        | otherwise = a + mul a (b-1)
+
+
+mulIterative a b = mulhelp a b 0
+  where mulhelp a b result | b == 0 = result
+                           | otherwise = mulhelp a (b - 1) (result + a)
+
+
+mulfast a b = mulhelp a b 0
+  where mulhelp a b result | b == 0 = result
+                           | even b = mulhelp a (b `div` 2) (result * 2)
+                           | otherwise = mulhelp a (b - 1) (result + a)
+
+
+double :: (Num a) => a -> a
+double x = x + x
+
+mulfastR a b | b == 0 = 0
+             | even b = double(mulfastR a (b `div` 2))
+             | otherwise = a + mulfastR a (b-1)
+
+
+cube x = x * x * x
+
+p x = 3 * x - 4 * cube x
+
+sine angle count = if abs angle < 0.1
+                   then (angle, count-1)
+                   else sine (angle/3) (count+1)
+
+fibIter num = fibhelper 0 1 num
+  where fibhelper a b num | num == 0 = a
+                          | otherwise = fibhelper b (a+b) (num-1)

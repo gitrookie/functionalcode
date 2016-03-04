@@ -122,3 +122,5 @@ listComb xs ys = do x <- xs
                     return (x, y)
 
 mymap f = foldl (\x -> f x) 0
+
+mi x = [(1, 2), (4, 5)]

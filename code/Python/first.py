@@ -43,3 +43,28 @@ def pascal(n):
       print(row)
       row=[l+r for l,r in zip(row+k,k+row)]
    return n>=1
+
+# GCD Algorithm
+def gcd(a, b):
+    if a < b:
+        a, b = b, a
+    while b > 0:
+        a, b = b, a % b
+
+    return a
+        
+
+def divisors(num):
+    index = 2
+    div_list = []
+    num1 = int(math.sqrt(num))
+    # while (index * index) <= num:
+    #     if num % index == 0:
+    #         div_list.append(index)
+    #         div_list.append(num//index)
+    #     index += 1
+    return [(index, (num//index)) for index in range(2, num1+1) if num % index == 0]
+
+    # return div_list
+
+print(divisors(36))

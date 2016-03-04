@@ -111,3 +111,13 @@ sine angle count = if abs angle < 0.1
 fibIter num = fibhelper 0 1 num
   where fibhelper a b num | num == 0 = a
                           | otherwise = fibhelper b (a+b) (num-1)
+
+-- GCD algorithms are based on the fact that gcd(x, y) = gcd(y, x/y)
+-- It is possible to show that after repeated reductions will always
+-- eventually produce a pair where second number is zero.
+
+mygcd a b | a < b = gcdhelper b a
+          | otherwise = gcdhelper a b
+  where gcdhelper x y = if y == 0
+                        then x
+                        else gcdhelper y (x `mod` y)

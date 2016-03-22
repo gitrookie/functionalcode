@@ -26,8 +26,9 @@
   A /thunk/ is unevaluated expression. It is used in haskell system that
   implements non-strict semantics by lazy evaluation. A lazy run-time system
   doesnt evaluate a thunk unless it has to. Expressions are translated into a
-  graph (not a tree this enables sharing and infinite lists) and a Spineless
-  Tagless G-machine /reduces/ it chuking out any unneeded thunk, unevaluated.
+  graph (not a tree this enables sharing and infinite lists) and a *Spineless*
+  *Tagless G-machine* /reduces/ it chuking out any unneeded thunk, unevaluated.
+  Can thunks be serialized without reducing it to normal form.?
 * Modules
   A haskell module consist of many of the various declarations which occur in
   arbitray order but import declarations must appear first. The declarations are
@@ -568,6 +569,16 @@
   In Haskell Non-strict semantics is implemented using Laziness.
   *String Handling in Haskell is normally lazy, so ~read~ and ~show~ can be used
   on quite large data structures without incident.
+** Lazy and Strict Functions
+   Function can be lazy or strict "in an argument". Most of functions need to do
+   something with their arguments, and this will involve evaluating these
+   arguments to different levels.
+   ~length *thunk*~ evaluates to something like ~length
+   (*thunk*:*thunk*:*thunk*:[]) which in turn evaluates to 3. Others need to
+   evaluate their arguments fully as in ~length . show~. If we has ~length $
+   show *thunk*~, there is no other way than to evalute the thunk to normal
+   form. If a function that evaluates its argument to at least WHNF is called
+   strict and one that performs no evaluation is lazy.
 * Currying
   A way of representing functions which take multiple arguments as functions of
   single arguments which returns function is called *currying*. Haskell function
@@ -581,6 +592,21 @@
 * Functors
 * Function Binding
 * Pattern Binding
+** As Patterns
+   Sometime it is convienent to name a pattern for use on the right hand side of
+   an equation. For example a function that duplicates the first element in a
+   list might be written as
+
+   ~f (x:xs) = x:x:xs~
+
+   In above code snippet ~x:xs~ appears both as pattern and expression. To avoid
+   this we can write ~as~ pattern as follows
+
+   ~f s@(x:xs) = xs~
+
+   Techincally speaking as patterns always results in a successful match though
+   sub-pattern (in this case x:xs) might fail.
+
 * Existential Type
 * Constructor
   A constructor can mean
@@ -588,3 +614,115 @@
   - Data/Value Constructor
   A ~data~ constructor introduces one or more ~type~ constructor and one or more
   value constructor for each type constructor.
+* Normal Form and Weak Head Normal Form and ~seq~
+  You need to understand two principles to see how programs are executed in
+  Haskell.
+  1. We have property of non-strictness: we evaluate/reduce as little as
+     possible and delay evaluation as long as possible.
+  2. Haskell values are highly layered and evaluating a haskell value could mean
+     evaluating down to any of these layers.
+  An expression in *normal form* is fully evaluated, and no sub-expression could
+  be evaluated any further. (it contains no un-evaluated thunks)
+  An epression in *weak head normal form* is evaluated to the outer most data
+  constructor or lambda abstraction (the head). Sub-expressions may or may not
+  be evaluated. Therefore every normal form is also in weak head normal form.
+  The semantics of ~seq~ function is that whenever y is evaluated to weak head
+  normal form x is also evaluated to weak head normal form. There is also *head
+  normal form* which is not used in Haskell. Fully evaluating WHNF reduces it to
+  Normal Form. If we say ~print z~ we have to fully evaluate the expression to
+  normal form. Performing any deegre of evaluation on a value is sometimes
+  called *forcing* that value.
+  Note that for some values there is only one result. For example we can't
+  pratially evaluate an integer its either a thunk or its normal
+  form. Furthermore, if we have a constructor with strict components (annonated
+  with an exclamation mark as with ~data MaybeS a = NothingS | JustS !a~) these
+  components become evaluated as soon as we evaluate level above i.e. we can
+  never have ~JustS *thunk*~ as soon as we get to this level the strictness
+  annonation on the component ~JustS~ forces us to evalute the component part.
+
+  So nothing gets evaluated until it is needed, only place haskell values are
+  evaluated is in pattern matches and inside certain primitive IO functions.
+* Haskell Denotational Semantics
+  Denotational Semantics means: How to Formalize the meaning of Haskell
+  Programs. 
+  What does a Haskell program mean is answered by denotational semantics of
+  Haskell. In general the *denotational semantics* of a programming language
+  maps each of its program to a mathematical object(denotation, that represents
+  the meaning of program in question.
+  The notions of *strict* and *lazy* that capture the idea that a function needs
+  or needs not to evaluate its argument. This is basic ingridient to evaluate
+  the course of evaluation of Haskell Programs. These notions can be formulated
+  concisely with denotational semantics alone, no reference to an execution
+  model is involved.
+
+  As an example mathematical objects for the Haskell programs ~10~, ~sum [1..4]~
+  can be represented by integer 10. We say all those programs denote integer 10.
+  The collection of such mathematical object is called the *semantic domain*.
+  
+  It is one of the key properties of the purely functional languages like
+  Haskell that a direct mathematical interpretation like "1+9" denotes 10
+  extends to functions also. In essence the denotation of a program of type
+  ~Integer -> Integer~ is mathematical function ~Z -> Z~ between integers.
+   While we see that this expression needs refinement to include
+  non-termination. 
+
+  In contrast, the meaning of purely functional languages is by default
+  completely independent of their way of execution. The Haskell 98 standard
+  even goes as far as to specify only Haskell's non-strict denotational
+  semantics, leaving open how to implement them.
+
+  In the end, denotational semantics enables us to develop fromal proofs that
+  program indeed do what we want them to do mathematically.
+
+  Ofcourse, because they only state what a program is, denotational semantics
+  cannot answer about how long a program runs or how much memory it eats; this
+  is goverened by evaluation strategy which dictates how the computer calculates
+  the normal form of an expression 
+
+** Bottom and Partial Functions
+   Partial Functions are those that are undefined for some values.
+   To define partial functions, we introduce a special value ~_|_~ named
+   bottom. We say that ~_|_~ is completely undefined value or function. Every
+   basic type like ~Integer~ or ~()~ contain ~_|_~ besides their usual
+   elements.
+   Adding ~_|_~ to the set of values is called *lifting*. In Haskell the
+   expression ~undefined~ denotes ~_|_~.
+   
+* Data vs Newtype
+  The types declared with ~data~ keyword are /lifted/ i.e they contain their own
+  _|_ value that is distinct from all the others.
+  A ~newtype~ exactly has one constructor with only one field inside it.
+  The restriction to one constructor with one field means that the newtype and
+  the type of field are in direct correspondence .
+  #+BEGIN_SRC haskell
+    State :: (s -> (s, a)) -> State s a
+    runState :: State s a -> (s -> (s, a))
+  #+END_SRC
+  or in mathematical terms they are isomorphic. This means that after the type
+  is checked at compile time, at run time the two types can be treated
+  essentially the same, without the overhead of indirection normally associated
+  with a data constructor. So if you want to create different typeclass
+  instances for a particular type, or want to make a type abstract you can wrap
+  it in ~newtype~ and it will be considered disctinct to the type-checker, but
+  identical at rumtime.
+
+** Representation
+   A newtype gaurantees that your data will have exactly the same representation
+   at runtime, as the type you wrap.
+   ~data~ declares a brand new data structure at runtime.
+** Strictness
+   The fact that constructor is erased leads to some very subtle differences in
+   strictness between ~data~ and ~newtype~. In particular ~data~ introduces a
+   type that is "lifted", meaning essentially, that it has additional way to
+   evaluate to a bottom value. Since there is no additional constructor at
+   runtime with ~newtype~, this property doesn't hold.
+   The extra pointer in the Book to (,) constructor allows us to put a bottom
+   value in.
+** Unboxing
+   It doesn't make sense to unbox the components of ~newtype~, since there is no
+   constructor. While it is perfectly reasonable to write
+
+   ~data T = T {-# UNPACK #-}!Int~
+
+   yielding a runtime object with a ~T~ constructor and an ~Int#~ component. You
+   just get a bare ~Int~ with ~newtype~.

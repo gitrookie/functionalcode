@@ -1,15 +1,47 @@
+* E
+** Execution Model
+  Execution Model specifies how work takes place. Every programming language has
+  execution model which is specified as part of language specification and
+  implemented as part of language implementation.
+  Executions Models can exist independent of programming language such as POSIX
+  thread library or Hadoop's Map-Reduce programming model. The implementation of
+  an execution model can be via compiler or interpreter and often includes run
+  time system.
 * F
 ** Formalism
    It is theory that holds that statements of mathematics and logic
    can considered to be statements about consequences of certain string
    manipulation rules.
-* Object Persistence
-  Most Object ceases to exist as they go out of scope. This may be when the
-  function in which they were created terminates. It may be when the container
-  in which they reside is deleted. At any rate they can be expected to disappear
-  when the program exits. Persistence Objects are those which survive between
-  successive invocations of the program. A classic example is of database
-  records. 
+* O
+** Object Persistence
+   Most Object ceases to exist as they go out of scope. This may be when the
+   function in which they were created terminates. It may be when the container
+   in which they reside is deleted. At any rate they can be expected to disappear
+   when the program exits. Persistence Objects are those which survive between
+   successive invocations of the program. A classic example is of database
+   records. 
+* P
+** Partially Ordered Set
+   In mathematics especially in order theory a partially order set formalizes
+   and generalizes the intutive concept of an ordering, sequencing or
+   arrangement of the element of a set. A poset consist of a set together with
+   binary relation that indicates that certain pairs of elements in the set one
+   of the elements precedes the other. Such a relation is called partial order
+   to reflect the fact that not every pair of elements need be related for some
+   pairs, it may be that niether elemetn precedes the other in poset. Thus
+   parital order precedes the total orders in which every pair is related.
+
+   A partially ordered set is characterized by three laws
+   1. Reflexivity
+   2. Transivity
+   3. Anitsymmtery 
+* R
+** Run time
+   A Run Time system primarily implements portions of execution model. Over the
+   years meaning of the term runtime system has been expanded to include nearly
+   any behaviors that are dynamically determined during execution.
+   One debatable way of defining runtime system is every behavior that is not
+   directly the work of a program is run time system.
 * S
 ** Syntactic Sugar
    Syntactic Forms which are alternative convenient surface structures for

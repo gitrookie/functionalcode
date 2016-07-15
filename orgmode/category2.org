@@ -1,0 +1,23 @@
+* Preface
+  Category Theory is treasure trove of extremely useful programming
+  ideas. Category theory -- rather dealing with particular deals with
+  structure. It deals with kind of structure that makes program composable. 
+  
+  Composition is very root of category theory -- its part of definition of
+  category itself. Composition is the essence of programming. Functional
+  Programming is not about composing functions and algebraic data structure it
+  makes concurrency composable.
+
+  Imperative paradigm don't buy us anything in realm of concurrecny and
+  parallelsim. Secondly scalability of imperative programs.
+* Category: The Essence of Composition
+  A category consist of objects and arrows (also called morphisms) that go
+  between them. Essence of category is composition or essence of composition is
+  category.
+** Properties of Composition
+   1. Composition is associative
+   2. For every object A there is unit of Composition.
+* Types and Functions
+  The *category of types and functions* play an important role in programming.
+  The two ends must fit for composition to work. The stronger the type system of
+  the language, the better this match can be described and verified.

@@ -3,7 +3,10 @@
   have a value even if some of their subexpressions do not. Haskell is one of
   the few programming languages to have non-strict semantics. It is what allows
   programs to work with conceptually infinite data structures. Haskell lets you
-  write your own control structures. 
+  write your own control structures.
+
+  *Strict Semantics* languages are those in which if some subexpression  fails
+  to have a value, whole expression fails with it.
   
   Any sufficiently capable programming language in /non-total/, which is to say
   we can write expressions that donot produce a value common examples are
@@ -55,5 +58,9 @@
   Non-Strict Semantics is not a performance feature. However major advantage
   non-strict semantics over strictness is that you get to write more cleaner and
   composable.
-
-  
+* Lazy vs Non Strict
+  Haskell is often described as lazy language. However, the language
+  specification says Haskell in non-strict which is not quite the same thing as
+  lazy
+  Non-strictness means that reduction (the mathematical term for evaluation)
+  proceeds from the outside in.

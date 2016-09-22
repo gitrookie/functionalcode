@@ -1,0 +1,18 @@
+* Model of Computation
+  In computability theory and computational complexity theory, a model of
+  computation is the definition of set of allowable operations used in
+  computation and their respective costs. It is used for measuring the
+  complexity of an algorithm in execution time and memory space. In the field of
+  runtime analysis of algorithm, it is common to specify a computational model
+  in terms of prmitive operations allowed which have unit costs.
+* Lambda Calculus
+** Lambda terms
+   A valid lambda calculus expression is called *lambda term*.
+   A lambda term is 
+   1. a variable, x, is itself a lambda term.
+   2. if t is lambda term and x is variable then (λx.t) is a lambda term (called
+      a lambda abstraction)
+   3. it t and s are lambda terms, then (ts) is a lambda term (called
+      application)
+   
+   Nothing else is a lambda term.

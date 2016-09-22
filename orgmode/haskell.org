@@ -24,7 +24,7 @@
   upon context in which expression is evaluated.
 * Thunk
   A /thunk/ is unevaluated expression. It is used in haskell system that
-  implements non-strict semantics by lazy evaluation. A lazy run-time system
+  implements non-strict semantics by lazy evaluation. A *lazy run-time system*
   doesnt evaluate a thunk unless it has to. Expressions are translated into a
   graph (not a tree this enables sharing and infinite lists) and a *Spineless*
   *Tagless G-machine* /reduces/ it chuking out any unneeded thunk, unevaluated.
@@ -642,6 +642,14 @@
 
   So nothing gets evaluated until it is needed, only place haskell values are
   evaluated is in pattern matches and inside certain primitive IO functions.
+** Weak Head Normal Form
+   An expression is in weak head normal form (WHNF) if it is either:
+   1. a constructor (eventually applied to arguments) like True, Just
+      (square 42) or (:) 1
+   2. a built in function applied to too few arguments (perhaps none) like (+) 2
+   3. or a lambda abstraction \x-> ~expression~.
+** Head Normal Form
+   Head Normal Form doesn't apply to Haskell.
 * Haskell Denotational Semantics
   Denotational Semantics means: How to Formalize the meaning of Haskell
   Programs. 
@@ -726,3 +734,14 @@
 
    yielding a runtime object with a ~T~ constructor and an ~Int#~ component. You
    just get a bare ~Int~ with ~newtype~.
+* Bottom
+  The term *bottom* refers to a computation which never completes
+  successfully. That includes a computation that fails due to some kind of
+  error, and a computation that goes into an infinite loop (without returning
+  any data)
+
+  Bottom is a member of any type, even the trivial type () or the equivalent
+  simple type
+
+  As bottom is an inhabitant of every type bottoms can be used wherever a value
+  of that type would be.

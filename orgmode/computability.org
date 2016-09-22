@@ -11,8 +11,16 @@
    A lambda term is 
    1. a variable, x, is itself a lambda term.
    2. if t is lambda term and x is variable then (λx.t) is a lambda term (called
-      a lambda abstraction)
+      a lambda abstraction). *Lambda abstraction binds variable x in the term t.*
    3. it t and s are lambda terms, then (ts) is a lambda term (called
-      application)
+      application). In lambda calculus function application is regarded as left
+      associative. 
    
-   Nothing else is a lambda term.
+   Nothing else is a lambda term. Thus a lambda term is valid only if it can be
+   obtained by repeated application of these three rules.
+
+   There are several notions of "equivalence" and "reduction" that allow lambda
+   terms to be reduced to "equivalent" lambda terms.
+*** α Equivalence
+    The choice of bound variable in lambda abstraction doesn't matter. For
+    instance λx.x and λy.y are alpha equivalent lambda terms.

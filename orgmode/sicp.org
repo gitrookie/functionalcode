@@ -1,3 +1,13 @@
+* Preface to First Addition
+  Computer Language is not just a way of getting computer to perform operations
+  but rather that it is novel formal medium for expressing ideas about
+  methodology. Thus,  programs must be written for people to read, and only
+  incidentally for machines to execute. The material of this book addresses the
+  the techniques used to control the intellectual complexity of large software
+  systems.
+  Computer Science is not a science and its significance has little to do with
+  computers. The computer revolution is a revolution in the way we think and in
+  the way we express what we think.
 * Building Abstraction with procedures
   We are about to study the idea of /computational processes/. Computational
   processes are abstract being that inhabit computers. As they evolve, processes
@@ -11,6 +21,8 @@
   *Lisp was invented in late 1960's as a formalism for reasoning about the use
    of certain kind of logical expressions called recursion equations as a model
    for computation.*
+
+   
 
    A Lisp interpreter is a machine that carries out the process described in
    Lisp Language. The most signficant feature of LISP is its description of

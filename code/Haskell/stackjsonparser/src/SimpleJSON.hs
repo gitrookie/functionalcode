@@ -48,3 +48,4 @@ getArray (JArray a) = Just a
 getArray _ = Nothing
 
 isNull v = v == JNull
+

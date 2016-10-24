@@ -22,8 +22,6 @@
    of certain kind of logical expressions called recursion equations as a model
    for computation.*
 
-   
-
    A Lisp interpreter is a machine that carries out the process described in
    Lisp Language. The most signficant feature of LISP is its description of
    processes called procedures can themselves be manipuated as LISP data. The
@@ -34,8 +32,18 @@
    pair. This memory is called the environment (more precisely /global
    environment/). An /environment/ is the /context/ in which /expressions/ are
    evaluated.
-   A /combination/ is an expression formed by list of expressions delimited
-   within paranthesis which denotes procedure application.
+   *A /combination/ is an expression formed by list of expressions delimited*
+   *within paranthesis which denotes procedure application.*
+   To evaluate a combination
+   1. Evaluate the sub expression of the combination.
+   2. Apply the procedure that is the value of leftmost subexpression (the operator) to the
+      arguments that are the value of other subexpressions (the operands).
+   The notion of environment as providing a context in which evaluation takes
+   place will play an important role in our understanding of program execution.
+
+
+   The interpreter runs in read-eval-print loop.
+
    
    #+BEGIN_SRC scheme
      (+ 2 3 (* 2 3))

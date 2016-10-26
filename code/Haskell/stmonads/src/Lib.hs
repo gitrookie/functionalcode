@@ -51,4 +51,9 @@ instance BasicEq3 Color where
   
 someFunc :: IO ()
 -- someFunc = putStrLn "someFunc"
-someFunc = getLine >>= putStrLn
+-- someFunc = getLine >>= putStrLn
+-- someFunc = putStrLn "Hello" >> putStrLn "World"
+-- someFunc = do s <- getLine
+--               putStrLn s
+someFunc = do putStrLn "Hello World"
+              putStrLn "Yes!"

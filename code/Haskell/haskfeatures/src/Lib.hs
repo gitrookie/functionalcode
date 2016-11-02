@@ -17,3 +17,6 @@ type Shape a = a -> [(a, String)]
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
+
+
+foo s = let z = [(length s, undefined)] in z

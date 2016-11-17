@@ -26,6 +26,7 @@ someFunc :: IO ()
 someFunc = putStrLn "someFunc"
 
 
+<<<<<<< HEAD
 data Customer  = Customer {customerID :: Int,
                           customerName :: String
                           }
@@ -77,3 +78,6 @@ class Foo a where
 
 
 data Color = Red | Green | Blue
+
+foo s = let z = [(length s, undefined)] in z
+

@@ -10,5 +10,10 @@ instance Foo Emp where
     foo x = Emp "Permanent" x
 
 
-data Color = Red | Green | Blue
-    deriving (Eq, Ord)
+f x = [1..x]
+g x = [-x, x]
+
+myconcat :: [[a]] -> [a]
+myconcat  = concat
+
+myconcat1 = concat
